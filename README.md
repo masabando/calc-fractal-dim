@@ -2,6 +2,8 @@
 
 画像のフラクタル次元を計算します。
 
+[デモページはこちら](https://kutc-fractal.web.app)
+
 ## 使い方
 
 `npm start`
