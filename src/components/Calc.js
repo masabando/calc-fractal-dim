@@ -32,25 +32,30 @@ function lsm(d) {
 // 分割数は 2^max, 2^(max-1), ..., 2^0 である。
 function calcFD(data, max, size, threshold) {
   let output = [];
+  // 数えるべきブロック(threshold未満の値は1、それ以外は0に変換したもの)
+  let d = data.map(l => l.map(c => c < threshold ? 1 : 0));
   for (let p = max; p >= 0; p--) {
     // 分割数
     let s = Math.floor(Math.pow(2, p));
+    // カウント
+    let count = d.flat().reduce((sum, ele) => sum + ele, 0);
     // 1ブロックのサイズ
     let w = Math.floor(size / s);
-    // 「カウントされた」ブロックの数
-    let count = 0;
-    // 1ブロックずつチェックする
-    for (let bx = 0; bx < s; bx++) {
-      for (let by = 0; by < s; by++) {
-        // 全体の2次元配列から対象ブロック部分を切り出して、1次元配列にしてチェックする
-        count += check(
-          data.slice(by * w, (by + 1) * w).map(d => d.slice(bx * w, (bx + 1) * w)).flat(),
-          threshold
-        )
-      }
-    }
     // 分割数とカウント数を対数にして記録する
-    output.push([Math.log(w)/Math.log(2), Math.log(count)/Math.log(2)]);
+    output.push([Math.log(w) / Math.log(2), Math.log(count) / Math.log(2)]);
+    if (p === 0) break;
+    // dを更新(2x2のブロックを結合)
+    let newD = new Array(s / 2).fill(0).map(() => new Array(s / 2).fill(0));
+    let ix = 0, iy = 0;
+    for (let y = 0; y < d.length; y += 2) {
+      for (let x = 0; x < d.length; x += 2) {
+        newD[iy][ix] = d[y][x] + d[y][x + 1] + d[y + 1][x] + d[y + 1][x + 1] > 0 ? 1 : 0;
+        ix++;
+      }
+      ix = 0;
+      iy++;
+    }
+    d = newD;
   }
   return -lsm(output);
 }
