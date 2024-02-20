@@ -119,6 +119,7 @@ function lineDatasets({ images, r, i }) {
     label: images[i].name,
     //borderColor: `hsl(${i * 360 / images.length}, 50%, 50%)`,
     borderColor: `hsl(0, 100%, ${i * 100 / images.length}%)`,
+    pointBackgroundColor: `hsl(0, 100%, ${i * 100 / images.length}%)`,
     data: r[1],
     pointRadius: 4,
   }

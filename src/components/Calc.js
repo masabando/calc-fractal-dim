@@ -1,20 +1,5 @@
 import { useEffect } from 'react';
 
-// 与えられたブロック(d)内にthreshold 未満の値があるかどうかをチェックする
-// d は 1 次元配列。
-// あれば 1、なければ 0 を返す。
-function check(d, threshold) {
-  let flag = 0;
-  for (let i = 0; i < d.length; i++) {
-    if (d[i] < threshold) {
-      flag = 1;
-      break;
-    }
-  }
-  return flag;
-}
-
-
 // 最小二乗法で直線の傾きを求める
 function lsm(d) {
   // d = [[x1, y1], [x2, y2], ...]
